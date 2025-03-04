@@ -20,10 +20,18 @@ class QuestionsController < ApplicationController
 
   def answer
     @question = params[:question]
-    @answer = case @question
-              when 'I am going to work' then 'Great!'
-              when ->(q) { q&.end_with?('?') } then 'Silly question, get dressed and go to work!'
-              else 'I don\'t care, get dressed and go to work!'
-              end
+    @answer = determine_answer(@question)
+  end
+
+  private
+
+  def determine_answer(question)
+    return 'Great!' if question == 'I am going to work'
+
+    if question.end_with?('?')
+      'Silly question, get dressed and go to work!'
+    else
+      'I don\'t care, get dressed and go to work!'
+    end
   end
 end
